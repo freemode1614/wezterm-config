@@ -1,5 +1,6 @@
 -- Pull in the wezterm API
 local wezterm = require("wezterm")
+local appearance = require("lua/appearance")
 local act = wezterm.act
 
 -- This table will hold the configuration.
@@ -46,7 +47,7 @@ config.window_frame = {
 	font = wezterm.font({ family = "Roboto", weight = "Bold" }),
 	-- The size of the font in the tab bar.
 	-- Default to 10.0 on Windows but 12.0 on other systems
-	font_size = 16.0,
+	font_size = 14.0,
 	-- The overall background color of the tab bar when
 	-- the window is focused
 	-- active_titlebar_bg = "#333333",
@@ -59,7 +60,11 @@ config.keys = {
 	{ key = "F9", mods = "ALT", action = wezterm.action.ShowTabNavigator },
 }
 
-config.colors = require("lua/cyberdream")
+if appearance.is_dark() then
+	config.colors = require("lua/cyberdream")
+else
+	config.colors = require("lua/cyberdream")
+end
 
 config.ssh_domains = {}
 
