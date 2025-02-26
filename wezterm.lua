@@ -1,7 +1,6 @@
--- Pull in the wezterm API
+local os = require("os")
 local wezterm = require("wezterm")
 local appearance = require("lua/appearance")
-local act = wezterm.act
 
 -- This table will hold the configuration.
 local config = {}
@@ -15,7 +14,6 @@ end
 -- This is where you actually apply your config choices
 
 -- For example, changing the color scheme:
-config.color_scheme = "catppuccin-mocha" -- "catppuccin-latte"
 config.window_close_confirmation = "NeverPrompt"
 
 -- [[
@@ -28,7 +26,7 @@ config.font = wezterm.font("FantasqueSansM Nerd Font Mono")
 config.font_size = 22.0
 
 -- tabs
-config.hide_tab_bar_if_only_one_tab = true
+config.hide_tab_bar_if_only_one_tab = false
 config.use_fancy_tab_bar = true
 
 config.window_background_opacity = 0.9
@@ -81,7 +79,7 @@ wezterm.on("update-status", function(window)
 		-- Then we draw our text
 		{ Background = { Color = bg } },
 		{ Foreground = { Color = fg } },
-		{ Text = "  " .. wezterm.hostname() .. "  " },
+		{ Text = "💻 wenpeng.lei → " .. wezterm.hostname() .. "  " },
 	}))
 end)
 
