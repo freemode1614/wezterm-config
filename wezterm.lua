@@ -27,14 +27,19 @@ config.window_close_confirmation = "NeverPrompt"
 config.font = wezterm.font("FantasqueSansM Nerd Font Mono")
 config.font_size = 22.0
 
-config.window_background_opacity = 0.95
+-- tabs
+config.hide_tab_bar_if_only_one_tab = true
+config.use_fancy_tab_bar = true
+
+config.window_background_opacity = 0.9
+config.macos_window_background_blur = 30
 config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 config.enable_scroll_bar = true
 config.window_padding = {
-	left = 4,
-	right = 1,
-	top = 4,
-	bottom = 4,
+	left = 0,
+	right = 0,
+	top = 0,
+	bottom = 0,
 }
 
 config.window_frame = {
@@ -56,9 +61,29 @@ config.window_frame = {
 	-- inactive_titlebar_bg = "#333333",
 }
 
-config.keys = {
-	{ key = "F9", mods = "ALT", action = wezterm.action.ShowTabNavigator },
-}
+wezterm.on("update-status", function(window)
+	-- Grab the utf8 character for the "powerline" left facing
+	-- solid arrow.
+	local SOLID_LEFT_ARROW = utf8.char(0xe0b2)
+
+	-- Grab the current window's configuration, and from it the
+	-- palette (this is the combination of your chosen colour scheme
+	-- including any overrides).
+	local color_scheme = window:effective_config().resolved_palette
+	local bg = color_scheme.background
+	local fg = color_scheme.foreground
+
+	window:set_right_status(wezterm.format({
+		-- First, we draw the arrow...
+		{ Background = { Color = "none" } },
+		{ Foreground = { Color = bg } },
+		{ Text = SOLID_LEFT_ARROW },
+		-- Then we draw our text
+		{ Background = { Color = bg } },
+		{ Foreground = { Color = fg } },
+		{ Text = "  " .. wezterm.hostname() .. "  " },
+	}))
+end)
 
 if appearance.is_dark() then
 	config.colors = require("lua/cyberdream")
